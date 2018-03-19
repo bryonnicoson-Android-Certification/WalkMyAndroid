@@ -32,7 +32,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FetchAddressTask.OnTaskCompleted {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -71,18 +71,16 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Location location) {
                             if (location != null) {
-                                mLastLocation = location;
-                                mTextViewLocation.setText(
-                                        getString(R.string.location_text,
-                                                mLastLocation.getLatitude(),
-                                                mLastLocation.getLongitude(),
-                                                mLastLocation.getTime()));
+                                new FetchAddressTask(MainActivity.this,
+                                        MainActivity.this).execute(location);
                             } else {
                                 mTextViewLocation.setText(R.string.no_location);
                             }
                         }
                     });
         }
+        mTextViewLocation.setText(getString(R.string.address_text, getString(R.string.loading),
+                System.currentTimeMillis()));
     }
 
     @Override
@@ -99,5 +97,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onTaskCompleted(String result) {
+        // Update the UI
+        mTextViewLocation.setText(getString(R.string.address_text, result,
+                System.currentTimeMillis()));
     }
 }
