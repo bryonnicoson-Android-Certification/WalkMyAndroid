@@ -24,7 +24,7 @@
     <string name="invalid_lat_long_used">Invalid Latitude/Longitude used</string>
     <string name="no_address_found">No address found</string>
     <string name="address_text">"Address: %1$s \n Timestamp: %2$tr"</string>
-    <string name="loading">loading</string>
+    <string name="loading">loading&#8230;</string>
     <string name="stop_tracking">Stop Tracking Location</string>
     <string name="start_tracking">Start Tracking Location</string>
 </resources>

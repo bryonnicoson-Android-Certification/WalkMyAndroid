@@ -146,5 +146,21 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return locationRequest;
     }
+    /**
+     * Overriding onPause, onResume to conserve battery when app is not in focus or paused
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mTrackingLocation) {
+            stopTrackingLocation();
+            mTrackingLocation = true;
+        }
+    }
 
+    @Override
+    protected void onPostResume() {
+        if (mTrackingLocation) startTrackingLocation();
+        super.onPostResume();
+    }
 }
