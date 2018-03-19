@@ -20,4 +20,5 @@
     <string name="textview_hint">Press the button to get the last known
         location
     </string>
+    <string name="location_permission_denied">Location permission denied.</string>
 </resources>
