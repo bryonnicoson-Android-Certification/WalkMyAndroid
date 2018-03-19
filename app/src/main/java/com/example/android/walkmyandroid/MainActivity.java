@@ -19,7 +19,6 @@ import android.Manifest;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -29,17 +28,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 public class MainActivity extends AppCompatActivity implements FetchAddressTask.OnTaskCompleted {
 
     private static final int REQUEST_LOCATION_PERMISSION = 1;
+    private static final String TRACKING_LOCATION_KEY = "Tracking Location Key";
 
     private Button mButtonLocation;
     private TextView mTextViewLocation;
@@ -73,6 +71,10 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         mRotateAnim = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.rotate);
         mRotateAnim.setTarget(mAndroidImageView);
 
+        if (savedInstanceState != null){
+            mTrackingLocation = savedInstanceState.getBoolean(TRACKING_LOCATION_KEY);
+        }
+
         mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -84,6 +86,12 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
             }
         };
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(TRACKING_LOCATION_KEY, mTrackingLocation);
+        super.onSaveInstanceState(outState);
     }
 
     private void startTrackingLocation() {
